@@ -1,0 +1,13 @@
+query CheckToken($token: String!) {
+    checkToken(token: $token) {
+        username
+        firstName
+        lastName
+        fullName
+        email
+        roles {
+            roleName
+            roles
+        }
+    }
+}
