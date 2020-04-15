@@ -11,11 +11,10 @@ import java.util.concurrent.CountDownLatch
 
 @Service
 class TokenService {
-    private val apolloClient = ApolloClient.builder()
-        .serverUrl("http://localhost:9090/graphql")
-        .build()
-
-    fun validateToken(token: String): CheckTokenQuery.CheckToken {
+    fun validateToken(token: String, serverUrl: String): CheckTokenQuery.CheckToken {
+        val apolloClient = ApolloClient.builder()
+            .serverUrl(serverUrl)
+            .build()
         val resultLatch = CountDownLatch(1)
         var responseData: Response<Data>? = null
         apolloClient.query(

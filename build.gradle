@@ -1,9 +1,27 @@
-plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.3.71'
+buildscript {
+    dependencies {
+        classpath("com.apollographql.apollo:apollo-gradle-plugin:1.4.4")
+    }
 }
 
+plugins {
+    id "com.jfrog.bintray" version "1.8.5"
+    id 'org.jetbrains.kotlin.jvm' version '1.3.71'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+apply plugin: 'com.apollographql.apollo'
+
 group 'com.pynguins.auth.library'
-version '1.0.0'
+version '1.1.0'
+
+String root_organisation = 'pynguins'
+String root_licence = 'BSD'
+String root_githubURL = 'https://github.com/Rich43/pynguins_auth_library.git'
+String root_desc = 'Authentication Kotlin GraphQL client library'
+String root_longName = 'Pynguins Authentication Client Library'
 
 repositories {
     mavenCentral()
@@ -23,4 +41,37 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    from sourceSets.main.kotlin
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    pkg {
+        repo = root_organisation
+        name = rootProject.name
+        desc = root_desc
+        licenses = [root_licence]
+        vcsUrl = root_githubURL
+        version {
+            name = version
+            desc = root_longName + " " + version
+            vcsTag = version
+        }
+    }
 }
