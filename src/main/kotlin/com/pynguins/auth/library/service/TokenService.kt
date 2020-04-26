@@ -1,10 +1,11 @@
-package com.pynguins.auth.library
+package com.pynguins.auth.library.service
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import com.pynguins.auth.library.CheckTokenQuery.Data
+import com.pynguins.auth.library.graphql.CheckTokenQuery
+import com.pynguins.auth.library.graphql.CheckTokenQuery.Data
 import graphql.GraphQLException
 import org.springframework.stereotype.Service
 import java.util.concurrent.CountDownLatch
