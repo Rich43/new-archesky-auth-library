@@ -28,7 +28,7 @@ apply plugin: 'maven'
 
 archivesBaseName = rootProject.name
 group 'com.pynguins.auth.library'
-version '1.2.0'
+version '1.3.0'
 
 String root_organisation = 'pynguins'
 String root_licence = 'BSD'
