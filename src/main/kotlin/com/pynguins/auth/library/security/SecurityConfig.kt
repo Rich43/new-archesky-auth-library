@@ -1,4 +1,4 @@
-package com.pynguins.auth.library.security
+package com.archesky.auth.library.security
 
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan(basePackages=["com.pynguins.auth.library.security", "com.pynguins.auth.library.service"])
+@ComponentScan(basePackages=["com.archesky.auth.library.security", "com.archesky.auth.library.service"])
 open class SecurityConfig(
     private val jwtTokenFilter: JwtTokenFilter,
     @Qualifier("customUserDetailsService") private val userDetailsService: UserDetailsService

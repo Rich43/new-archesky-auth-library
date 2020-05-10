@@ -1,16 +1,16 @@
-package com.pynguins.auth.library.security
+package com.archesky.auth.library.security
 
-import com.pynguins.auth.library.service.TokenMappingService
-import com.pynguins.auth.library.service.TokenService
+import com.archesky.auth.library.service.TokenMappingService
+import com.archesky.auth.library.service.TokenService
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.core.env.Environment
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import org.springframework.core.env.Environment
 import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -41,7 +41,7 @@ class JwtTokenFilter(
         return try {
             val validateToken = TokenService().validateToken(
                     token!!,
-                    env.getProperty("pynguins.auth.library.server.url", "http://localhost:9090/graphql")
+                    env.getProperty("archesky.auth.library.server.url", "http://localhost:9090/graphql")
             )
             tokenMappingService.userTokenMap[validateToken.username] = validateToken
             val userDetails = this.userDetailsService.loadUserByUsername(validateToken.username)

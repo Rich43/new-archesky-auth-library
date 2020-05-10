@@ -1,6 +1,6 @@
-package com.pynguins.auth.library.service
+package com.archesky.auth.library.service
 
-import com.pynguins.auth.library.graphql.CheckTokenQuery
+import com.archesky.auth.library.graphql.CheckTokenQuery
 import org.springframework.stereotype.Service
 
 @Service

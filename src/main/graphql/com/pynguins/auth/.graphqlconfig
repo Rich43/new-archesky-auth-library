@@ -1,5 +1,5 @@
 {
-  "name": "Pynguins OpenID Connect token validation and extraction server",
+  "name": "Archesky OpenID Connect token validation and extraction server",
   "schemaPath": "schema.json",
   "extensions": {
     "endpoints": {

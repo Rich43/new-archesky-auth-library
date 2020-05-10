@@ -1,4 +1,4 @@
-package com.pynguins.auth.library.service
+package com.archesky.auth.library.service
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
