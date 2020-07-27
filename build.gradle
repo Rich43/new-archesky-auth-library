@@ -13,16 +13,14 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'maven'
-//    id 'signing'
 }
 
 apply plugin: 'com.apollographql.apollo'
 apply plugin: 'maven'
-//apply plugin: 'signing'
 
 archivesBaseName = rootProject.name
 group 'com.archesky.auth.library'
-version '1.4.0'
+version '0.0.' + System.getenv("GITHUB_RUN_ID") + '-SNAPSHOT'
 
 String root_organisation = 'pynguins'
 String root_licence = 'BSD'
@@ -76,19 +74,15 @@ configurations {
     }
 }
 
-//signing {
-//    sign configurations.archives
-//}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "http://pynguins.com:8081/nexus/content/repositories/releases") {
-                authentication(userName: "admin", password: "changeme")
-            }
-            pom.version = version
-            pom.artifactId = "archesky-auth-library"
-            pom.groupId = "com.archesky.auth.library"
-        }
+publishing {
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/Rich43/archesky-auth-library"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
     }
+  }
 }
