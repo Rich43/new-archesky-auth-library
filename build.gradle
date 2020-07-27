@@ -22,12 +22,6 @@ archivesBaseName = rootProject.name
 group 'com.archesky.auth.library'
 version '0.0.' + System.getenv("GITHUB_RUN_ID") + '-SNAPSHOT'
 
-String root_organisation = 'pynguins'
-String root_licence = 'BSD'
-String root_githubURL = 'https://github.com/Rich43/pynguins_auth_library.git'
-String root_desc = 'Authentication Kotlin GraphQL client library'
-String root_longName = 'Pynguins Authentication Client Library'
-
 repositories {
     mavenCentral()
     jcenter()
