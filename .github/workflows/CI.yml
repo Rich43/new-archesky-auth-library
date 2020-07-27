@@ -46,7 +46,6 @@ jobs:
         with:
           tag_name: ${{ github.run_id }}
           release_name: Release ${{ github.run_id }}
-          body_path: README.md
           draft: false
           prerelease: false
       - name: Upload Release Asset
