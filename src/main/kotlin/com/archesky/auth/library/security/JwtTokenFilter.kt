@@ -41,7 +41,7 @@ class JwtTokenFilter(
         return try {
             val validateToken = TokenService().validateToken(
                     token!!,
-                    env.getProperty("archesky.auth.library.server.url", "https://localhost:9090/graphql")
+                    env.getProperty("archesky.auth.library.server.url", "https://localhost:9443/graphql")
             )
             tokenMappingService.userTokenMap[validateToken.username] = validateToken
             val userDetails = this.userDetailsService.loadUserByUsername(validateToken.username)
