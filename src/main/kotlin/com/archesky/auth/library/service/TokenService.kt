@@ -7,12 +7,11 @@ import com.apollographql.apollo.exception.ApolloException
 import com.archesky.auth.library.graphql.CheckTokenQuery
 import com.archesky.auth.library.graphql.CheckTokenQuery.Data
 import graphql.GraphQLException
-import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
 import java.util.concurrent.CountDownLatch
 
 @Service
-class TokenService(private val env: Environment) {
+class TokenService {
     fun validateToken(token: String, serverUrl: String): CheckTokenQuery.CheckToken {
         val apolloClient = ApolloClient.builder()
                 .serverUrl(serverUrl)
