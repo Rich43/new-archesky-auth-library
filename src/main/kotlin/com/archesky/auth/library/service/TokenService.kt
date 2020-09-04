@@ -26,7 +26,7 @@ class TokenService(private val env: Environment) {
             System.setProperty("javax.net.ssl.trustStore", trustStore)
             System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword)
         }
-        if (valueOf(System.getProperty("server.ssl.disable-verification"))) {
+        if (valueOf(env.getProperty("server.ssl.disable-verification"))) {
             HttpsURLConnection.setDefaultHostnameVerifier(NullHostNameVerifier())
             val context: SSLContext = SSLContext.getInstance("TLS")
             context.init(null, Array(1){ NullTrustManager() }, SecureRandom())
