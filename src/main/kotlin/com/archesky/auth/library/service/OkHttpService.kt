@@ -36,7 +36,7 @@ object OkHttpService {
             val sslSocketFactory = sslContext.socketFactory
             val builder = OkHttpClient.Builder()
             builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
-            builder.hostnameVerifier { hostname, session -> true }
+            builder.hostnameVerifier { _, _ -> true }
             builder.build()
         } catch (e: Exception) {
             throw RuntimeException(e)
