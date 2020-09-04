@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletResponse
 class JwtTokenFilter(
         @Qualifier("customUserDetailsService") private val userDetailsService: UserDetailsService,
         private val tokenMappingService: TokenMappingService,
-        private val env: Environment
+        private val env: Environment,
+        private val tokenService: TokenService
 ) : OncePerRequestFilter() {
     private val log = getLogger(this.javaClass)
 
@@ -39,7 +40,7 @@ class JwtTokenFilter(
 
     private fun getAuthentication(token: String?): Authentication? {
         return try {
-            val validateToken = TokenService().validateToken(
+            val validateToken = tokenService.validateToken(
                     token!!,
                     env.getProperty("archesky.auth.library.server.url", "https://localhost:9443/graphql")
             )
