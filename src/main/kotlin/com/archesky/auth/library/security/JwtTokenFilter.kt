@@ -28,6 +28,11 @@ class JwtTokenFilter(
 
     private fun getHost(request: HttpServletRequest): String {
         try {
+            return request.getHeader("Hostname")
+        } catch (e: IllegalStateException) {
+            // Do nothing
+        }
+        try {
             return request.getHeader("Host")
         } catch (e: IllegalStateException) {
             // Do nothing

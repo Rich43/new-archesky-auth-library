@@ -21,7 +21,7 @@ class TokenService {
         val resultLatch = CountDownLatch(1)
         var responseData: Response<Data>? = null
         apolloClient.query(CheckTokenQuery(token))
-                .requestHeaders(builder().addHeader("Host", hostName).build())
+                .requestHeaders(builder().addHeader("Hostname", hostName).build())
                 .enqueue(object : ApolloCall.Callback<Data>() {
                     override fun onFailure(e: ApolloException) {
                         resultLatch.countDown()
