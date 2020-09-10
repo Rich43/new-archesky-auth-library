@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import java.net.MalformedURLException
 import java.net.URL
 import java.util.*
 import javax.servlet.FilterChain
@@ -40,6 +41,8 @@ class JwtTokenFilter(
         try {
             return URL(request.getHeader("Origin")).host
         } catch (e: IllegalStateException) {
+            // Do nothing
+        } catch (e: MalformedURLException) {
             // Do nothing
         }
         return "localhost"
