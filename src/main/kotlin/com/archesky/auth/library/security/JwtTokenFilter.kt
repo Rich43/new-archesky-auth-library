@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import java.net.URL
 import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -25,6 +26,20 @@ class JwtTokenFilter(
 ) : OncePerRequestFilter() {
     private val log = getLogger(this.javaClass)
 
+    private fun getHost(request: HttpServletRequest): String {
+        try {
+            return request.getHeader("Host")
+        } catch (e: IllegalStateException) {
+            // Do nothing
+        }
+        try {
+            return URL(request.getHeader("Origin")).host
+        } catch (e: IllegalStateException) {
+            // Do nothing
+        }
+        return "localhost"
+    }
+
     private fun resolveToken(request: HttpServletRequest): String? {
         val optReq = Optional.of(request)
 
@@ -38,11 +53,12 @@ class JwtTokenFilter(
         }.orElse(null)
     }
 
-    private fun getAuthentication(token: String?): Authentication? {
+    private fun getAuthentication(token: String?, hostName: String): Authentication? {
         return try {
             val validateToken = tokenService.validateToken(
                     token!!,
-                    env.getProperty("archesky.auth.library.server.url", "https://localhost:9443/graphql")
+                    env.getProperty("archesky.auth.library.server.url", "https://localhost:9443/graphql"),
+                    hostName
             )
             tokenMappingService.userTokenMap[validateToken.username] = validateToken
             val userDetails = this.userDetailsService.loadUserByUsername(validateToken.username)
@@ -55,7 +71,7 @@ class JwtTokenFilter(
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val token = resolveToken(request)
         if (token != null) {
-            val auth = getAuthentication(token)
+            val auth = getAuthentication(token, getHost(request))
             if (auth == null) {
                 log.debug("Invalid token")
             } else {
