@@ -2,6 +2,7 @@ package com.archesky.auth.library.security
 
 import com.archesky.auth.library.service.TokenMappingService
 import com.archesky.auth.library.service.TokenService
+import com.archesky.common.library.HeaderUtil.getHost
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.env.Environment
@@ -11,8 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import java.net.MalformedURLException
-import java.net.URL
 import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -26,27 +25,6 @@ class JwtTokenFilter(
         private val tokenService: TokenService
 ) : OncePerRequestFilter() {
     private val log = getLogger(this.javaClass)
-
-    private fun getHost(request: HttpServletRequest): String {
-        try {
-            return request.getHeader("hostname")
-        } catch (e: IllegalStateException) {
-            // Do nothing
-        }
-        try {
-            return request.getHeader("Host")
-        } catch (e: IllegalStateException) {
-            // Do nothing
-        }
-        try {
-            return URL(request.getHeader("Origin")).host
-        } catch (e: IllegalStateException) {
-            // Do nothing
-        } catch (e: MalformedURLException) {
-            // Do nothing
-        }
-        return "localhost"
-    }
 
     private fun resolveToken(request: HttpServletRequest): String? {
         val optReq = Optional.of(request)
