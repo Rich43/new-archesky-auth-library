@@ -37,7 +37,7 @@ repositories {
     maven("https://maven.pkg.github.com/Rich43/archesky-common-library") {
         credentials {
             username = "Rich43"
-            password = getenv()["GITHUB_TOKEN"]
+            password = "9ebd237471a62653323892f93aefb46307d89a91"
         }
     }
     mavenCentral()
@@ -75,7 +75,9 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifact(sourceJar)
+            artifact(sourceJar) {
+                classifier = "sources"
+            }
         }
     }
 }
