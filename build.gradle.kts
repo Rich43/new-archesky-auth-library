@@ -65,7 +65,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Rich43/archesky-content-server")
+            url = uri("https://maven.pkg.github.com/Rich43/archesky-auth-library")
             credentials {
                 username = getenv().getOrDefault("GITHUB_ACTOR", "Rich43")
                 password = getenv()["GITHUB_TOKEN"]
