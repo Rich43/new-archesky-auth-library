@@ -34,7 +34,7 @@ configurations {
 
 repositories {
     jcenter()
-    maven("https://maven.pkg.github.com/Rich43/archesky-auth-library") {
+    maven("https://maven.pkg.github.com/Rich43/archesky-common-library") {
         credentials {
             username = "Rich43"
             password = getenv()["GITHUB_TOKEN"]
@@ -51,6 +51,7 @@ dependencies {
     implementation("org.springframework.security:spring-security-core:5.3.1.RELEASE")
     implementation("org.springframework.security:spring-security-config:5.3.1.RELEASE")
     implementation("org.springframework.security:spring-security-web:5.3.1.RELEASE")
+    implementation("com.archesky.common.library:archesky-common-library:0.0.251130938-SNAPSHOT")
     implementation("com.graphql-java-kickstart:graphql-java-tools:6.1.0")
     implementation("javax.servlet:javax.servlet-api:4.0.1")
 }
