@@ -1,8 +1,7 @@
 package com.archesky.auth.library.security
 
-import org.springframework.beans.factory.annotation.Qualifier
+import com.archesky.auth.library.service.CustomUserDetailsService
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -11,16 +10,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan(basePackages=["com.archesky.auth.library.security", "com.archesky.auth.library.service"])
 open class SecurityConfig(
-    private val jwtTokenFilter: JwtTokenFilter,
-    @Qualifier("customUserDetailsService") private val userDetailsService: UserDetailsService
+        private val jwtTokenFilter: JwtTokenFilter,
+        private val userDetailsService: CustomUserDetailsService
 ) : WebSecurityConfigurerAdapter() {
     @Bean
     @Throws(Exception::class)
