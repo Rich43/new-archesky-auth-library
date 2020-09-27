@@ -1,15 +1,14 @@
 package com.archesky.auth.library.security
 
+import com.archesky.auth.library.service.CustomUserDetailsService
 import com.archesky.auth.library.service.TokenMappingService
 import com.archesky.auth.library.service.TokenService
 import com.archesky.common.library.HeaderUtil.getHost
 import org.slf4j.LoggerFactory.getLogger
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.env.Environment
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.util.*
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class JwtTokenFilter(
-        @Qualifier("customUserDetailsService") private val userDetailsService: UserDetailsService,
+        private val userDetailsService: CustomUserDetailsService,
         private val tokenMappingService: TokenMappingService,
         private val env: Environment,
         private val tokenService: TokenService
@@ -29,13 +28,12 @@ class JwtTokenFilter(
     private fun resolveToken(request: HttpServletRequest): String? {
         val optReq = Optional.of(request)
 
-        return optReq.map {
-            req: HttpServletRequest -> req.getHeader("Authorization")
-        }.filter {
-            token: String ->
+        return optReq.map { req: HttpServletRequest ->
+            req.getHeader("Authorization")
+        }.filter { token: String ->
             token.isNotEmpty()
-        }.map {
-            token: String -> token.replace("Bearer ", "")
+        }.map { token: String ->
+            token.replace("Bearer ", "")
         }.orElse(null)
     }
 
