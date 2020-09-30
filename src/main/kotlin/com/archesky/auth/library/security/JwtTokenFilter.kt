@@ -3,7 +3,7 @@ package com.archesky.auth.library.security
 import com.archesky.auth.library.service.CustomUserDetailsService
 import com.archesky.auth.library.service.TokenMappingService
 import com.archesky.auth.library.service.TokenService
-import com.archesky.common.library.HeaderUtil.getHost
+import com.archesky.apollo.library.HeaderUtil.getHost
 import org.slf4j.LoggerFactory.getLogger
 import org.springframework.core.env.Environment
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
