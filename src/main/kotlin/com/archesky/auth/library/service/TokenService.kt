@@ -7,7 +7,7 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.request.RequestHeaders.builder
 import com.archesky.auth.library.graphql.CheckTokenQuery
 import com.archesky.auth.library.graphql.CheckTokenQuery.Data
-import com.archesky.common.library.service.OkHttpService
+import com.archesky.apollo.library.service.OkHttpService
 import graphql.GraphQLException
 import org.springframework.stereotype.Service
 import java.util.concurrent.CountDownLatch
