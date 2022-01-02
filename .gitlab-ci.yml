@@ -12,5 +12,3 @@ deploy-auth-lib:
   stage: deploy
   script:
     - 'mvn deploy -s ci_settings.xml'
-  only:
-    - main
