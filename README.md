@@ -1,6 +1,6 @@
 Archesky Auth Library
 ---------------------
 
-![CI](https://github.com/Rich43/archesky-auth-library/workflows/CI/badge.svg)
+https://gitlab.com/uplandrward/archesky-auth-library
 
-TODO: Add docs
+TODO: Add docs 
