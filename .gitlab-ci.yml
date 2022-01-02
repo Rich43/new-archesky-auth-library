@@ -13,4 +13,5 @@ build-auth-lib:
 deploy-auth-lib:
   stage: deploy
   script:
+    - "mvn versions:set -DnewVersion=1.$CI_PIPELINE_IID.0-SNAPSHOT"
     - 'mvn deploy -s ci_settings.xml'
