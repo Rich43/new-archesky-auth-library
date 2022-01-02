@@ -1,12 +1,16 @@
 image: maven:3-jdk-11
 
-build:
+stages:
+  - build
+  - deploy
+
+build-auth-lib:
+  stage: build
   script:
     - "mvn versions:set -DnewVersion=1.$CI_PIPELINE_IID.$CI_COMMIT_TIMESTAMP"
     - "mvn install -B"
 
-deploy:
+deploy-auth-lib:
+  stage: deploy
   script:
     - 'mvn deploy -s ci_settings.xml'
-  only:
-    - main
