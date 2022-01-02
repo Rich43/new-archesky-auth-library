@@ -2,10 +2,7 @@ package com.archesky.auth.library.service;
 
 import com.archesky.auth.library.model.Token;
 import com.google.gson.Gson;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,7 +14,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Service
 public class TokenService {
 
-    private Request get(final String url, final Map<String, String> params) {
+    private Request get(final String url, final Map<String, String> params, Headers headers) {
         final HttpUrl.Builder httpBuilder = requireNonNull(
                 HttpUrl.parse(url), "Could not parse url - " + url
         ).newBuilder();
@@ -26,7 +23,7 @@ public class TokenService {
                 httpBuilder.addQueryParameter(param.getKey(),param.getValue());
             }
         }
-        return new Request.Builder().url(httpBuilder.build()).build();
+        return new Request.Builder().url(httpBuilder.build()).headers(headers).build();
     }
 
     public Token validateToken(final String serverUrl, final String token, final String hostName) {
@@ -35,7 +32,11 @@ public class TokenService {
                 .readTimeout(30, SECONDS)
                 .build();
 
-        final Request request = get(serverUrl, Map.of("token", token, "hostname", hostName));
+        final Request request = get(
+                serverUrl,
+                Map.of("token", token, "hostname", hostName),
+                Headers.of("hostname", hostName)
+        );
 
         try (final Response response = client.newCall(request).execute()) {
             return new Gson().fromJson(requireNonNull(
