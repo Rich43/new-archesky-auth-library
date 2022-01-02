@@ -1,7 +1,9 @@
 image: maven:3-jdk-11
 
 build:
-  script: "mvn install -B"
+  script:
+    - "mvn versions:set -DnewVersion=1.$CI_PIPELINE_IID.$CI_COMMIT_TIMESTAMP"
+    - "mvn install -B"
 
 deploy:
   script:
