@@ -7,7 +7,7 @@ stages:
 build-auth-lib:
   stage: build
   script:
-    - "mvn versions:set -DnewVersion=1.$CI_PIPELINE_IID.$CI_COMMIT_TIMESTAMP"
+    - "mvn versions:set -DnewVersion=1.$CI_PIPELINE_IID.0-SNAPSHOT"
     - "mvn install -B"
 
 deploy-auth-lib:
