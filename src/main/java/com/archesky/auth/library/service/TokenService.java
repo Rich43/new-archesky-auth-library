@@ -1,45 +1,48 @@
 package com.archesky.auth.library.service;
 
-
-//@Service
-//class TokenService {
-//    fun validateToken(token: String, serverUrl: String, hostName: String): Token {
-//        val apolloClient = ApolloClient.builder()
-//                .serverUrl(serverUrl)
-//                .okHttpClient(OkHttpService.unsafeOkHttpClient)
-//                .build()
-//        val resultLatch = CountDownLatch(1)
-//        var responseData: Response<Data>? = null
-//        apolloClient.query(CheckTokenQuery(token))
-//                .requestHeaders(builder().addHeader("hostname", hostName).build())
-//                .enqueue(object : ApolloCall.Callback<Data>() {
-//            override fun onFailure(e: ApolloException) {
-//                resultLatch.countDown()
-//                throw GraphQLException(e.message)
-//            }
-//
-//            override fun onResponse(response: Response<Data>) {
-//                responseData = response
-//                resultLatch.countDown()
-//            }
-//        })
-//        resultLatch.await()
-//        responseData!!.errors().forEach {
-//            throw GraphQLException(it.message())
-//        }
-//        return responseData!!.data()!!.checkToken
-//    }
-//}
-
-import com.archesky.auth.library.model.Role;
 import com.archesky.auth.library.model.Token;
+import com.google.gson.Gson;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.io.IOException;
+import java.util.Map;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Service
 public class TokenService {
-    public Token validateToken(String token, String serverUrl, String hostName) {
-        return new Token("", "", "", "", "", Collections.<Role>emptyList());
+
+    private Request get(final String url, final Map<String, String> params) {
+        final HttpUrl.Builder httpBuilder = requireNonNull(
+                HttpUrl.parse(url), "Could not parse url - " + url
+        ).newBuilder();
+        if (params != null) {
+            for(final Map.Entry<String, String> param : params.entrySet()) {
+                httpBuilder.addQueryParameter(param.getKey(),param.getValue());
+            }
+        }
+        return new Request.Builder().url(httpBuilder.build()).build();
+    }
+
+    public Token validateToken(final String serverUrl, final String token, final String hostName) {
+        final OkHttpClient client = new OkHttpClient().newBuilder()
+                .connectTimeout(10, SECONDS)
+                .readTimeout(30, SECONDS)
+                .build();
+
+        final Request request = get(serverUrl, Map.of("token", token, "hostname", hostName));
+
+        try (final Response response = client.newCall(request).execute()) {
+            return new Gson().fromJson(requireNonNull(
+                    response.body(), "Response body is null"
+            ).string(), Token.class);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
