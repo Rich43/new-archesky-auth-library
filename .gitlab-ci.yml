@@ -6,13 +6,11 @@ stages:
 
 build-auth-lib:
   stage: build
-  build:
-    script: "mvn install -B"
+  script: "mvn install -B"
 
 deploy-auth-lib:
   stage: deploy
-  deploy:
-    script:
-      - 'mvn deploy -s ci_settings.xml'
-    only:
-      - main
+  script:
+    - 'mvn deploy -s ci_settings.xml'
+  only:
+    - main
