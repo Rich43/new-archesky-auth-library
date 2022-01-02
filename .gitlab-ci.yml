@@ -2,3 +2,9 @@ image: maven:3-jdk-11
 
 build:
   script: "mvn install -B"
+
+deploy:
+  script:
+    - 'mvn deploy -s ci_settings.xml'
+  only:
+    - main
