@@ -1,5 +1,9 @@
 image: maven:3-jdk-11
 
+stages:
+  - build
+  - deploy
+
 build:
   script: "mvn install -B"
 
