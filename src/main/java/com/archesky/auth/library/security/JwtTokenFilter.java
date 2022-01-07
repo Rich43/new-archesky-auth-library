@@ -67,15 +67,13 @@ class JwtTokenFilter extends OncePerRequestFilter {
         if (token != null) {
             final Authentication auth = getAuthentication(token, getHost(request));
             if (auth == null) {
-                log.debug("Invalid token");
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+                log.warn("Invalid token");
             } else {
-                log.debug("Token accepted");
+                log.info("Token accepted");
             }
             getContext().setAuthentication(auth);
         } else {
-            log.debug("No auth token");
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            log.warn("No auth token");
         }
         filterChain.doFilter(request, response);
     }
