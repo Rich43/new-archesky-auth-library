@@ -3,6 +3,7 @@ package com.archesky.auth.library.service;
 import com.archesky.auth.library.model.Token;
 import com.google.gson.Gson;
 import okhttp3.*;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -10,11 +11,14 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.slf4j.LoggerFactory.getLogger;
 
 @Service
 public class TokenService {
+    private final Logger log = getLogger(this.getClass());
 
     private Request get(final String url, final Map<String, String> params, Headers headers) {
+        log.info("Making auth get request to {} with params {} and headers {}", url, params, headers);
         final HttpUrl.Builder httpBuilder = requireNonNull(
                 HttpUrl.parse(url), "Could not parse url - " + url
         ).newBuilder();
@@ -39,6 +43,7 @@ public class TokenService {
         );
 
         try (final Response response = client.newCall(request).execute()) {
+            log.debug("Received response: {}", response.body());
             return new Gson().fromJson(requireNonNull(
                     response.body(), "Response body is null"
             ).string(), Token.class);
