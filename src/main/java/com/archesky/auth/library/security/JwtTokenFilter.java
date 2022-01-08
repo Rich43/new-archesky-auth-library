@@ -40,6 +40,7 @@ class JwtTokenFilter extends OncePerRequestFilter {
 
     private String resolveToken(final HttpServletRequest request) {
         final String bearerToken = request.getHeader("Authorization");
+        log.info("Authorization header for request: {}", bearerToken);
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
@@ -47,6 +48,7 @@ class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private Authentication getAuthentication(final String token, final String hostName){
+        log.info("Getting authentication for token {} and hostname {}", token, hostName);
         try {
             final Token validateToken = tokenService.validateToken(
                     env.getProperty("archesky.auth.library.server.url", "https://localhost:9090/auth-server/auth"), token,
