@@ -18,7 +18,7 @@ public class TokenService {
     private final Logger log = getLogger(this.getClass());
 
     private Request post(final String url, final Map<String, String> params) {
-        log.info("Making auth get request to {} with params {}", url, params);
+        log.info("Making auth post request to {} with params {}", url, params);
         final RequestBody requestBody = RequestBody.create(
                 new Gson().toJson(params),
                 MediaType.get("application/json; charset=utf-8")
