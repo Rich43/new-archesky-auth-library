@@ -2,10 +2,7 @@ package com.archesky.auth.library.service;
 
 import com.archesky.auth.library.model.Token;
 import com.google.gson.Gson;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +11,6 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static okhttp3.MediaType.get;
-import static okhttp3.RequestBody.Companion;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Service
@@ -24,9 +19,9 @@ public class TokenService {
 
     private Request post(final String url, final Map<String, String> params) {
         log.info("Making auth get request to {} with params {}", url, params);
-        final RequestBody requestBody = Companion.create(
+        final RequestBody requestBody = RequestBody.create(
                 new Gson().toJson(params),
-                get("application/json; charset=utf-8")
+                MediaType.get("application/json; charset=utf-8")
         );
         return new Request.Builder().url(url).post(requestBody).build();
     }
