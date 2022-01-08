@@ -47,7 +47,7 @@ class JwtTokenFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private Authentication getAuthentication(final String token, final String hostName){
+    private Authentication getAuthentication(final String token, final String hostName) {
         log.info("Getting authentication for token {} and hostname {}", token, hostName);
         try {
             final String authURL = env.getProperty(
@@ -56,11 +56,15 @@ class JwtTokenFilter extends OncePerRequestFilter {
             );
             log.info("Auth server url: {}", authURL);
             final Token validateToken = tokenService.validateToken(authURL, token, hostName);
+            log.info("Token validation result: {}", validateToken);
             tokenMappingService.getUserTokenMap().put(validateToken.getUsername(), validateToken);
+            log.info("Token mapping: {}", tokenMappingService.getUserTokenMap());
             final UserDetails userDetails = this.userDetailsService.loadUserByUsername(validateToken.getUsername());
+            log.info("User details: {}", userDetails);
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         } catch (final Exception e) {
-           return null;
+            log.error("Error while getting authentication: {}", e.getMessage());
+            return null;
         }
     }
 
