@@ -52,7 +52,7 @@ class JwtTokenFilter extends OncePerRequestFilter {
         try {
             final String authURL = env.getProperty(
                     "archesky.auth.library.server.url",
-                    "https://localhost:9090/auth-server/auth"
+                    "http://localhost:9090/auth-server/auth"
             );
             log.info("Auth server url: {}", authURL);
             final Token validateToken = tokenService.validateToken(authURL, token, hostName);
