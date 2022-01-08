@@ -39,7 +39,11 @@ public class TokenService {
         );
 
         try (final Response response = client.newCall(request).execute()) {
-            log.info("Received response: {}", response.body());
+            if (!response.isSuccessful()) {
+                log.error("Request failed with code {}", response.code());
+                throw new RuntimeException("Unexpected code: " + response.code() + " from server, message: " + response.message());
+            }
+            log.info("Received response: {}", requireNonNull(response.body(), "Response body was null").string());
             return new Gson().fromJson(requireNonNull(
                     response.body(), "Response body is null"
             ).string(), Token.class);
