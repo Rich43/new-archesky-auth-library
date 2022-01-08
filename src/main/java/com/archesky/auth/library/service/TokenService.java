@@ -23,6 +23,7 @@ public class TokenService {
                 new Gson().toJson(params),
                 MediaType.get("application/json; charset=utf-8")
         );
+        log.info("Created request body: {}", requestBody);
         return new Request.Builder().url(url).post(requestBody).build();
     }
 
