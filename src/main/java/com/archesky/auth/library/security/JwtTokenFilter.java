@@ -50,10 +50,12 @@ class JwtTokenFilter extends OncePerRequestFilter {
     private Authentication getAuthentication(final String token, final String hostName){
         log.info("Getting authentication for token {} and hostname {}", token, hostName);
         try {
-            final Token validateToken = tokenService.validateToken(
-                    env.getProperty("archesky.auth.library.server.url", "https://localhost:9090/auth-server/auth"), token,
-                    hostName
+            final String authURL = env.getProperty(
+                    "archesky.auth.library.server.url",
+                    "https://localhost:9090/auth-server/auth"
             );
+            log.info("Auth server url: {}", authURL);
+            final Token validateToken = tokenService.validateToken(authURL, token, hostName);
             tokenMappingService.getUserTokenMap().put(validateToken.getUsername(), validateToken);
             final UserDetails userDetails = this.userDetailsService.loadUserByUsername(validateToken.getUsername());
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
