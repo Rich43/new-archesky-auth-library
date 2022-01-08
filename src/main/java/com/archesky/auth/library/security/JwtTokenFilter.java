@@ -49,7 +49,7 @@ class JwtTokenFilter extends OncePerRequestFilter {
     private Authentication getAuthentication(final String token, final String hostName){
         try {
             final Token validateToken = tokenService.validateToken(
-                    env.getProperty("archesky.auth.library.server.url", "https://localhost:9443/graphql"), token,
+                    env.getProperty("archesky.auth.library.server.url", "https://localhost:9090/auth-server/auth"), token,
                     hostName
             );
             tokenMappingService.getUserTokenMap().put(validateToken.getUsername(), validateToken);
