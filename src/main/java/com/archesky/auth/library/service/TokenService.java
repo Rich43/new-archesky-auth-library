@@ -44,8 +44,9 @@ public class TokenService {
                 throw new RuntimeException("Unexpected code: " + response.code() + " from server, message: " + response.message());
             }
             final ResponseBody body = requireNonNull(response.body(), "Response body is null");
-            log.info("Received response: {}", requireNonNull(body, "Response body was null").string());
-            return new Gson().fromJson(body.string(), Token.class);
+            final String bodyString = body.string();
+            log.info("Received response: {}", bodyString);
+            return new Gson().fromJson(bodyString, Token.class);
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
